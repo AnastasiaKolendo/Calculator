@@ -1,30 +1,57 @@
 class Calculator{
-    constructor(){
-        this.value = 0;
+    constructor(str){
+        this.str = str;
+        this.value = '';
+        this.parsedArray = [];
     }
 
-    calculateValue(str){
-        const parsedArray = parseString(str);
+    evaluateExpression(stack){
+        let result = 0;
 
+        if(stack.length > 0){
+            result = stack.pop();
+        }
+       
+        while(stack.length > 0 && stack[stack.length - 1] !== ')'){
+            const sign = stack.pop();
+            const operand = stack.pop();
+            result = this.calculate(result, sign, operand)
+        }
+
+        this.stack.pop();
+        return result;
     }
 
-    calculate(num1, operator, num2){
-        let result;
-        if(operator === '-'){
-            result = num1 - num2;
-        } else if(operator === '+'){
-            result = num1 + num2;
-        } else if(operator === '*'){
-            result = num1 * num2
-        } else {
-            result = num1 / num2;
+    calculateValue(){
+        const stack = [];
+
+        for(let i = this.parsedArray.length - 1; i >= 0; i--){
+            if(this.parsedArray[i] === '('){
+                let result = evaluateExpression(stack);
+                stack.pop();
+                stack.push(result);
+            } else if(this.parsedArray[i] === ')'){
+
+            }
         }
     }
 
+    calculate(operand1, operator, operand2){
+        let result;
+        if(operator === '-'){
+            result = operand1 - operand2;
+        } else if(operator === '+'){
+            result = operand1 + operand2;
+        } else if(operator === '*'){
+            result = operand1 * operand2
+        } else {
+            result = operand1 / operand2;
+        }
+    }
 
-    parseString(str){
+    parseString(){
         const array = [];
-        s = s.replace(/\s/g, "");
+        const s = this.str.replace(/\s/g, "");
         
         for(let i = 0; i < s.length; i++){
             if(s[i] === '*' || s[i] === '/' || s[i] === '+' || s[i] === '-' || s[i] === '(' || s[i] === ')'){
@@ -37,13 +64,21 @@ class Calculator{
                 i = i + String(num).length - 1;
             }
         }
-        return array;
-    }
 
-    clear(){
-        this.value = 0;
+        this.parsedArray = array;
     }
 }
 
 
+const readline = require("readline");
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question("Enter your expression, please: ", function (answer) {
+    console.log(answer);
+    rl.close()
+  });
 
