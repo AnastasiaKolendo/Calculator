@@ -1,8 +1,9 @@
 class Calculator {
-    constructor(str) {
-        this.str = str;
+    constructor(expression) {
+        this.expression = expression;
         this.value = '';
-        this.parsedArray = [];
+        this.arrayExpression = [];
+        this.openParentheses = 0;
     }
 
     evaluateExpression(stack) {
@@ -49,22 +50,39 @@ class Calculator {
         }
     }
 
-    parseString() {
+    parseExpression() {
         const array = [];
-        const s = this.str.replace(/\s/g, "");
+        const expression = this.expression.replace(/\s/g, "");
 
         try {
-            for (let i = 0; i < s.length; i++) {
-                if (s[i] === '*' || s[i] === '/' || s[i] === '(' || s[i] === ')') {
-                    array.push(s[i]);
-                } else if ((s[i] === '-' && s[i - 1] !== '-' && s[i - 1] !== '+' && s[i - 1] !== '*' && s[i - 1] !== '/' && i !== 0) || s[i] === '+') {
+            for (let i = 0; i < expression.length; i++) {
+
+                if(expression[i] === '(' || expression[i] === ')'){
+                    if(this.validateParentheses(expression[i], expression[i + 1])){
+                        array.push(expression[i]);
+                    } else {
+                        throw new Error('Invalid Syntax');
+                    }
+                } 
+
+                if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
+
+                    if(expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+'){
+                        throw new Error('Invalid Syntax');
+                    }
+
+                    array.push(expression[i]);
+
+                } 
+                
+                if ((expression[i] === '-' && expression[i - 1] !== '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '/' && i !== 0)) {
 
                     array.push(s[i]);
 
                 } else {
 
-                    const floatNum = Number.parseFloat(s.slice(i));
-                    const num = Number.parseInt(s.slice(i));
+                    const floatNum = Number.parseFloat(expression.slice(i));
+                    const num = Number.parseInt(expression.slice(i));
 
                     if (isNaN(num) && isNaN(floatNum)) {
                         throw new Error('Invalid Input');
@@ -79,11 +97,25 @@ class Calculator {
                     }
                 }
             }
-            this.parsedArray = array;
+            this.arrayExpression = array;
+            console.log(this.arrayExpression)
         } catch (error) {
             console.log(error.message)
         }
         
+    }
+
+    validateParentheses(parenthesis, nextElement){
+        if(nextElement === '(' || nextElement === ')' || (parenthesis === ')' && this.openParentheses === 0)){
+            return false;
+        }
+
+        if(eparenthesis === '('){
+            openParentheses++;
+        } else {
+            openParentheses--;
+        }
+        return true;
     }
 }
 
@@ -96,7 +128,7 @@ const rl = readline.createInterface({
 
 rl.question("Enter your expression, please: ", function (answer) {
     const calculator = new Calculator(answer);
-    calculator.parseString();
+    calculator.parseExpression();
     rl.close()
 });
 
