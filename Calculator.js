@@ -1,53 +1,62 @@
 class Calculator {
     constructor(expression) {
         this.expression = expression;
-        this.value = '';
         this.arrayExpression = [];
         this.openParentheses = 0;
     }
 
-    evaluateExpression(stack) {
-        let result = 0;
+    evaluateExpression() {
+        const arrayExpression = this.parseExpression();
 
-        if (stack.length > 0) {
-            result = stack.pop();
-        }
+        if(arrayExpression.length === 0) return 0;
 
-        while (stack.length > 0 && stack[stack.length - 1] !== ')') {
-            const sign = stack.pop();
-            const operand = stack.pop();
-            result = this.calculate(result, sign, operand)
-        }
+        const numbers = [];
+        const operations = [];
 
-        this.stack.pop();
-        return result;
-    }
+        for(let i = 0; i < arrayExpression.length; i++){
 
-    calculateValue() {
-        const stack = [];
+            if (!isNaN(arrayExpression[i])) {
+                numbers.push(arrayExpression[i]);
+                
+            } else if (arrayExpression[i] === '('){
+                operations.push('(');
 
-        for (let i = this.parsedArray.length - 1; i >= 0; i--) {
-            if (this.parsedArray[i] === '(') {
-                let result = evaluateExpression(stack);
-                stack.pop();
-                stack.push(result);
-            } else if (this.parsedArray[i] === ')') {
+            } else if (arrayExpression[i] === ')'){
 
+                while(operations[operations.length - 1] !== '(') {
+                    
+                    let operator = operations.pop();
+                    numbers.push(this.calculate(numbers.pop(), operator, numbers.pop()))
+                    
+                }
+                operations.pop();
+
+            } else {
+                while(operations.length > 0 && this.checkPrecedence(arrayExpression[i], operations[operations.length - 1])){
+                    numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
+                }
+                operations.push(arrayExpression[i]);
+                
             }
         }
+
+        while(operations.length !== 0){
+            numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
+        }
+        return numbers.pop();
+    }
+
+    checkPrecedence(operator1, operator2){
+        if(operator2 === '(' || operator2 === ')') return false;
+        if((operator1 === '*' || operator1 === '/') && (operator2 === '+' || operator2 === '-')) return false;
+        return true;
     }
 
     calculate(operand1, operator, operand2) {
-        let result;
-        if (operator === '-') {
-            result = operand1 - operand2;
-        } else if (operator === '+') {
-            result = operand1 + operand2;
-        } else if (operator === '*') {
-            result = operand1 * operand2
-        } else {
-            result = operand1 / operand2;
-        }
+        if (operator === '-') return operand1 - operand2;  
+        if (operator === '+') return operand1 + operand2;
+        if (operator === '*') return operand1 * operand2;
+        else return operand1 / operand2;
     }
 
     parseExpression() {
@@ -57,30 +66,32 @@ class Calculator {
         try {
             for (let i = 0; i < expression.length; i++) {
 
-                if(expression[i] === '(' || expression[i] === ')'){
-                    if(this.validateParentheses(expression[i], expression[i + 1])){
+                if (expression[i] === '(' || expression[i] === ')') {
+                    if (this.validateParentheses(expression[i], expression[i + 1])) {
                         array.push(expression[i]);
                     } else {
                         throw new Error('Invalid Syntax');
                     }
-                } 
+                } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
 
-                if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
-
-                    if(expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+'){
+                    if (expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+') {
                         throw new Error('Invalid Syntax');
                     }
 
                     array.push(expression[i]);
 
-                } 
-                
-                if ((expression[i] === '-' && expression[i - 1] !== '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '/' && i !== 0)) {
+                } else if (expression[i] === '-') {
+                    
+                    if (expression[i + 1] === '-' && expression[i + 2] === '+' || expression[i + 2] === '-' || expression[i + 2] === '*' || expression[i + 2] === '/'
+                    || expression[i + 2] === '(' || expression[i + 2] === ')' || (i + 1 === expression.length - 1 && i !== 0)) {
+                        throw new Error('Invalid Syntax');
+                    }
 
-                    array.push(s[i]);
-
+                    if (expression[i - 1] !== '+' && expression[i - 1] !== '*' && i > 0 && expression[i - 1] !== '/' && expression[i - 1] !== '-') {
+                        array.push(expression[i]);
+                    }
                 } else {
-
+                    
                     const floatNum = Number.parseFloat(expression.slice(i));
                     const num = Number.parseInt(expression.slice(i));
 
@@ -97,24 +108,20 @@ class Calculator {
                     }
                 }
             }
-            this.arrayExpression = array;
-            console.log(this.arrayExpression)
+            
+            return array;
         } catch (error) {
             console.log(error.message)
         }
-        
     }
 
-    validateParentheses(parenthesis, nextElement){
-        if(nextElement === '(' || nextElement === ')' || (parenthesis === ')' && this.openParentheses === 0)){
-            return false;
-        }
-
-        if(eparenthesis === '('){
-            openParentheses++;
-        } else {
-            openParentheses--;
-        }
+    validateParentheses(parenthesis, nextElement) {
+        if (nextElement === '(' || nextElement === ')' || 
+        (parenthesis === ')' && this.openParentheses === 0)) return false;
+        
+        if (parenthesis === '(') this.openParentheses++;
+        else this.openParentheses--;
+        
         return true;
     }
 }
@@ -126,9 +133,10 @@ const rl = readline.createInterface({
     output: process.stdout,
 });
 
-rl.question("Enter your expression, please: ", function (answer) {
-    const calculator = new Calculator(answer);
-    calculator.parseExpression();
+rl.question("Enter your expression, please: ", function (input) {
+    const calculator = new Calculator(input);
+    const value = calculator.evaluateExpression();
+    console.log('Answer: ' + value);
     rl.close()
 });
 
