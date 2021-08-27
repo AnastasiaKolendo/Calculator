@@ -54,18 +54,23 @@ class Calculator{
         const s = this.str.replace(/\s/g, "");
         
         for(let i = 0; i < s.length; i++){
-            if(s[i] === '*' || s[i] === '/' || s[i] === '+' || s[i] === '-' || s[i] === '(' || s[i] === ')'){
+            if(s[i] === '*' || s[i] === '/' || s[i] === '(' || s[i] === ')'){
                array.push(s[i]); 
-            } else {
+            } else if((s[i] === '-' && s[i - 1] !== '-' && s[i - 1] !== '+' && s[i - 1] !== '*' && s[i - 1] !== '/' && i !== 0) || s[i] === '+'){
+            
+                array.push(s[i]); 
                 
+            } else {
+                console.log(s.slice(i))
                 const num = Number.parseInt(s.slice(i));
                
                 array.push(num);
                 i = i + String(num).length - 1;
             }
         }
-
+        
         this.parsedArray = array;
+        console.log(this.parsedArray)
     }
 }
 
@@ -78,7 +83,8 @@ const rl = readline.createInterface({
   });
 
   rl.question("Enter your expression, please: ", function (answer) {
-    console.log(answer);
+    const calculator = new Calculator(answer);
+    calculator.parseString();
     rl.close()
   });
 
