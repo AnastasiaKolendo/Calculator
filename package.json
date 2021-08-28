@@ -4,8 +4,19 @@
   "description": "a calculator program",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha calculator-specs.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnastasiaKolendo/Calculator.git"
   },
   "author": "Anastasiia Kolendo",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "babel-register": "^6.26.0",
+    "chai": "^4.3.4",
+    "jasmine": "^3.9.0",
+    "mocha": "^9.1.0",
+    "testem": "^3.4.3"
+  }
 }
