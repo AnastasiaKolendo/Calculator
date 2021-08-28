@@ -69,17 +69,17 @@ class Calculator {
                 if (this.validateParentheses(expression[i], expression[i + 1])) {
                     array.push(expression[i]);
                 } else {
-                    throw new Error('Invalid Syntax');
+                    throw new Error('Invalid Input');
                 }
             } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
                 if (i === 0 || i === expression.length - 1 || expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+') {
-                    throw new Error('Invalid Syntax');
+                    throw new Error('Invalid Input');
                 }
                 array.push(expression[i]);
 
             } else if (expression[i] === '-' && expression[i + 1] === '-' && (expression[i + 2] === '+' || expression[i + 2] === '-' || expression[i + 2] === '*' || expression[i + 2] === '/'
                 || expression[i + 2] === '(' || expression[i + 2] === ')' || i + 1 === expression.length - 1 || i === 0)) {
-                throw new Error('Invalid Syntax');
+                throw new Error('Invalid Input');
             } else if (expression[i] === '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '-' && expression[i - 1] !== '/' && i > 0) {
                 array.push(expression[i],);
             } else {
