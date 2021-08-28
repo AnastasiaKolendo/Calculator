@@ -5,6 +5,7 @@ class Calculator {
     }
 
     evaluateExpression() {
+
         const arrayExpression = this.parseExpression();
 
         if (arrayExpression.length === 0) return 0;
@@ -15,6 +16,7 @@ class Calculator {
         for (let i = 0; i < arrayExpression.length; i++) {
 
             if (!isNaN(arrayExpression[i])) {
+
                 numbers.push(arrayExpression[i]);
 
             } else if (arrayExpression[i] === '(') {
@@ -34,7 +36,6 @@ class Calculator {
                     numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
                 }
                 operations.push(arrayExpression[i]);
-
             }
         }
 
@@ -42,6 +43,7 @@ class Calculator {
             numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
         }
         return numbers.pop();
+
     }
 
     checkPrecedence(operator1, operator2) {
@@ -51,59 +53,62 @@ class Calculator {
     }
 
     calculate(operand1, operator, operand2) {
-        if (operator === '-') return operand1 - operand2;
+        if (operator === '-') return operand2 - operand1;
         if (operator === '+') return operand1 + operand2;
         if (operator === '*') return operand1 * operand2;
-        else return operand1 / operand2;
+        else return operand2 / operand1;
     }
 
     parseExpression() {
         const array = [];
         const expression = this.expression.replace(/\s/g, "");
 
-        try {
-            for (let i = 0; i < expression.length; i++) {
-                
-                if (expression[i] === '(' || expression[i] === ')') {
-                    if (this.validateParentheses(expression[i], expression[i + 1])) {
-                        array.push(expression[i]);
-                    } else {
-                        throw new Error('Invalid Syntax');
-                    }
-                } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
+        for (let i = 0; i < expression.length; i++) {
 
-                    if (i === 0 || i === expression.length - 1 || expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+') {
-                        throw new Error('Invalid Syntax');
-                    }
+            if (expression[i] === '(' || expression[i] === ')') {
+                if (this.validateParentheses(expression[i], expression[i + 1])) {
                     array.push(expression[i]);
-
-                } else if (expression[i] === '-' && expression[i + 1] === '-' && (expression[i + 2] === '+' || expression[i + 2] === '-' || expression[i + 2] === '*' || expression[i + 2] === '/'
-                    || expression[i + 2] === '(' || expression[i + 2] === ')' || i + 1 === expression.length - 1 || i === 0)) {
-                    throw new Error('Invalid Syntax');
-                } else if (expression[i] === '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '-' && expression[i - 1] !== '/' && i > 0) {
-                    array.push(expression[i], );
                 } else {
-                    const floatNum = Number.parseFloat(expression.slice(i));
-                    const num = Number.parseInt(expression.slice(i));
+                    throw new Error('Invalid Syntax');
+                }
+            } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
+                if (i === 0 || i === expression.length - 1 || expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+') {
+                    throw new Error('Invalid Syntax');
+                }
+                array.push(expression[i]);
 
-                    if (isNaN(num) && isNaN(floatNum)) {
-                        throw new Error('Invalid Input');
-                    }
+            } else if (expression[i] === '-' && expression[i + 1] === '-' && (expression[i + 2] === '+' || expression[i + 2] === '-' || expression[i + 2] === '*' || expression[i + 2] === '/'
+                || expression[i + 2] === '(' || expression[i + 2] === ')' || i + 1 === expression.length - 1 || i === 0)) {
+                throw new Error('Invalid Syntax');
+            } else if (expression[i] === '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '-' && expression[i - 1] !== '/' && i > 0) {
+                array.push(expression[i],);
+            } else {
+                const subExpression = expression.slice(i);
+                const floatNum = Number.parseFloat(subExpression);
+                const num = Number.parseInt(subExpression);
 
-                    if (num !== floatNum) {
-                        array.push(floatNum);
-                        i = i + String(floatNum).length - 1;
+                if (isNaN(num) && isNaN(floatNum)) {
+                    throw new Error('Invalid Input');
+                }
+
+                if (num !== floatNum) {
+                    array.push(floatNum);
+                    let floatNumString = String(floatNum);
+
+                    const dotIndex = subExpression.indexOf('.')
+                    if (isNaN(subExpression[dotIndex - 1])) {
+                        i = i + floatNumString.length - 2;
                     } else {
-                        array.push(num);
-                        i = i + String(num).length - 1;
+                        i = i + floatNumString.length - 1;
                     }
+
+                } else {
+                    array.push(num);
+                    i = i + String(num).length - 1;
                 }
             }
-            
-            return array;
-        } catch (error) {
-            console.log(error.message)
         }
+        return array;
     }
 
     validateParentheses(parenthesis, nextElement) {
@@ -126,8 +131,13 @@ const rl = readline.createInterface({
 
 rl.question("Enter your expression, please: ", function (input) {
     const calculator = new Calculator(input);
-    const value = calculator.evaluateExpression();
-    console.log('Answer: ' + value);
+    try {
+        const value = calculator.evaluateExpression();
+        console.log('Answer: ' + value);
+    } catch (error) {
+        console.log(error.message)
+    }
+    
     rl.close()
 });
 
