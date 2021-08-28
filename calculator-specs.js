@@ -5,6 +5,12 @@ describe('Calculator', function () {
     let calculator;
 
     it('calculate expression', function(){
+        calculator = new Calculator('1.9 + 2.8');
+        const value = calculator.evaluateExpression();
+        expect(value).to.be.at.most(5);	
+    })
+
+    it('calculate expression', function(){
         calculator = new Calculator('1 + 2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(3);
@@ -47,4 +53,6 @@ describe('Calculator', function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')
     })
+
+
 })
