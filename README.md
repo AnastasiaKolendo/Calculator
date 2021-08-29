@@ -3,7 +3,7 @@
 ## Description
 
 A calculator program that allows a user to enter a math problem as a string and get an answer.
-> Assignment for VidMob. Technologies used: ES6, Chai.
+> Assignment for VidMob. 
 
 **The calculator allows basic arithmetic operations:**
 
@@ -13,14 +13,17 @@ A calculator program that allows a user to enter a math problem as a string and 
 `÷` - division
 
 ## Install
-npm i
+Run npm i to install dev dependencies
 
 ## Usage
 To use this as boilerplate, you'll need to take the following steps:
 * Fork the repository: https://github.com/AnastasiaKolendo/Calculator.git
 * Install node and a text editor
 * Clone the repository to your local machine
-* Run node calculator.js from your command line
+* Run node main.js using your command line from the directory that contains the file
 
 ## Run tests
 npm test
+
+## Tech Stack
+JavaScript ES6, Node.js, Mocha, Chai.
