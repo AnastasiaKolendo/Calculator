@@ -1,4 +1,4 @@
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 const Calculator = require('./calculator.js');
 
 describe('Calculator', function () {
@@ -53,6 +53,4 @@ describe('Calculator', function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')
     })
-
-
 })
