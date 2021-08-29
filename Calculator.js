@@ -1,11 +1,9 @@
 class Calculator {
     constructor(expression) {
         this.expression = expression;
-        this.openParentheses = 0;
     }
 
     evaluateExpression() {
-
         const arrayExpression = this.parseExpression();
 
         if (arrayExpression.length === 0) return 0;
@@ -16,25 +14,24 @@ class Calculator {
         for (let i = 0; i < arrayExpression.length; i++) {
 
             if (!isNaN(arrayExpression[i])) {
-
                 numbers.push(arrayExpression[i]);
-
             } else if (arrayExpression[i] === '(') {
                 operations.push('(');
-
             } else if (arrayExpression[i] === ')') {
 
                 while (operations[operations.length - 1] !== '(') {
+                    if (operations.length === 0) throw new Error('Invalid Input');
 
                     numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
-
                 }
-                operations.pop();
 
+                operations.pop();
             } else {
+
                 while (operations.length > 0 && this.checkPrecedence(arrayExpression[i], operations[operations.length - 1])) {
                     numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
                 }
+
                 operations.push(arrayExpression[i]);
             }
         }
@@ -42,8 +39,8 @@ class Calculator {
         while (operations.length !== 0) {
             numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
         }
-        return numbers.pop();
 
+        return numbers.pop();
     }
 
     checkPrecedence(operator1, operator2) {
@@ -59,67 +56,54 @@ class Calculator {
         else return operand2 / operand1;
     }
 
+
     parseExpression() {
         const array = [];
-        const expression = this.expression.replace(/\s/g, "");
+        this.removeSpaces();
+        let expression = this.expression;
+        let i = 0;
 
-        for (let i = 0; i < expression.length; i++) {
+        while (i < expression.length) {
 
-            if (expression[i] === '(' || expression[i] === ')') {
-                if (this.validateParentheses(expression[i], expression[i + 1])) {
+            if (expression[i] === '-' && i !== 0 && expression[i - 1] !== '+' && expression[i - 1] !== '-' && expression[i - 1] !== '(' && expression[i - 1] !== '/' && expression[i - 1] !== '*') {
                     array.push(expression[i]);
-                } else {
-                    throw new Error('Invalid Input');
-                }
-            } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+') {
-                if (i === 0 || i === expression.length - 1 || expression[i + 1] === '/' || expression[i + 1] === '*' || expression[i + 1] === '+') {
-                    throw new Error('Invalid Input');
-                }
+                    i++;
+            } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+' || expression[i] === '(' || expression[i] === ')') {
                 array.push(expression[i]);
-
-            } else if (expression[i] === '-' && expression[i + 1] === '-' && (expression[i + 2] === '+' || expression[i + 2] === '-' || expression[i + 2] === '*' || expression[i + 2] === '/'
-                || expression[i + 2] === '(' || expression[i + 2] === ')' || i + 1 === expression.length - 1 || i === 0)) {
-                throw new Error('Invalid Input');
-            } else if (expression[i] === '-' && expression[i - 1] !== '+' && expression[i - 1] !== '*' && expression[i - 1] !== '-' && expression[i - 1] !== '/' && i > 0) {
-                array.push(expression[i],);
+                i++;
             } else {
-                const subExpression = expression.slice(i);
-                const floatNum = Number.parseFloat(subExpression);
-                const num = Number.parseInt(subExpression);
 
-                if (isNaN(num) && isNaN(floatNum)) {
-                    throw new Error('Invalid Input');
+                let j = i;
+
+                if(expression[j] === '-'){
+                    j = i + 1
                 }
 
-                if (num !== floatNum) {
-                    array.push(floatNum);
-                    let floatNumString = String(floatNum);
-
-                    const dotIndex = subExpression.indexOf('.')
-                    if (isNaN(subExpression[dotIndex - 1])) {
-                        i = i + floatNumString.length - 2;
-                    } else {
-                        i = i + floatNumString.length - 1;
-                    }
-
-                } else {
-                    array.push(num);
-                    i = i + String(num).length - 1;
+                while(expression[j] === '.' || !isNaN(expression[j])){
+                    j++;
                 }
+
+                const numString = expression.slice(i, j);
+                
+                const num = Number.parseFloat(numString);
+
+                if(isNaN(num)){
+                    
+                    throw new Error('Invalid number at ' + expression.slice(i));
+                }
+
+                array.push(num);
+                i = j;
             }
         }
+    
         return array;
     }
 
-    validateParentheses(parenthesis, nextElement) {
-        if (nextElement === '(' || nextElement === ')' ||
-            (parenthesis === ')' && this.openParentheses === 0)) return false;
-
-        if (parenthesis === '(') this.openParentheses++;
-        else this.openParentheses--;
-
-        return true;
+    removeSpaces() {
+        this.expression = this.expression.split('').filter(el => el !== ' ').join('');
     }
+
 }
 
 module.exports = Calculator
