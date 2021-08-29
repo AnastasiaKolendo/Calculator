@@ -1,6 +1,6 @@
-#Calculator
+# Calculator
 
-##Description
+## Description
 
 A calculator program that allows a user to enter a math problem as a string and get an answer.
 
@@ -10,11 +10,11 @@ A calculator program that allows a user to enter a math problem as a string and 
 * - multiplication
 ÷ - division
 
-##Install
+## Install
 npm i
 
-##Usage
+## Usage
 node calculator.js
 
-##Run tests
+## Run tests
 npm test
