@@ -18,7 +18,9 @@ npm i
 ## Usage
 To use this as boilerplate, you'll need to take the following steps:
 * Fork the repository: https://github.com/AnastasiaKolendo/Calculator.git
-* run node calculator.js
+* Install node and a text editor
+* Clone the repository to your local machine
+* Run node calculator.js from your command line
 
 ## Run tests
 npm test

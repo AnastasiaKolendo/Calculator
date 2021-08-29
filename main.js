@@ -1,4 +1,5 @@
 const readline = require("readline");
+const Calculator = require('./calculator.js');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -14,6 +15,6 @@ rl.question("Enter your expression, please: ", function (input) {
     } catch (error) {
         console.log(error.message)
     }
-    
+
     rl.close()
 });

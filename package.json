@@ -1,8 +1,8 @@
 {
   "name": "calculator",
   "version": "1.0.0",
-  "description": "a calculator program",
-  "main": "index.js",
+  "description": "A calculator program that allows a user to enter a math problem as a string and get an answer",
+  "main": "main.js",
   "scripts": {
     "test": "mocha calculator-specs.js --watch"
   },
@@ -15,8 +15,6 @@
   "devDependencies": {
     "babel-register": "^6.26.0",
     "chai": "^4.3.4",
-    "jasmine": "^3.9.0",
-    "mocha": "^9.1.0",
-    "testem": "^3.4.3"
+    "mocha": "^9.1.0"
   }
 }
