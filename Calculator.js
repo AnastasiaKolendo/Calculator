@@ -61,10 +61,10 @@ class Calculator {
     parseExpression() {
         const array = [];
         this.removeSpaces();
-        let i = 0;
         const arithmeticMinusPredecessors = ['+', '-', '(', '/', '*'];
         const nonMinusOperators = ['*', '/', '+', '(', ')'];
-
+        
+        let i = 0;
         while (i < this.expression.length) {
 
             if (this.expression[i] === '-' && i !== 0 && !arithmeticMinusPredecessors.includes(this.expression[i - 1])) {

@@ -11,12 +11,12 @@ describe('Calculator', function () {
     })
 
     it('substructs numbers', function () {
-        calculator = new Calculator('16 - 2 - 3');
+        calculator = new Calculator('16 - 2');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(11);
+        expect(value).to.equal(14);
     })
 
-    it('adds and substructs', function () {
+    it('adds and substructs numbers', function () {
         calculator = new Calculator('16 - 2 + 3');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(17);
@@ -41,9 +41,9 @@ describe('Calculator', function () {
     })
 
     it('multiplis, devides, substructs and adds', function () {
-        calculator = new Calculator('6 * 4 / 3 - 3 + 5');
+        calculator = new Calculator('3 + 6 * 4 / 3 - 5');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(10);
+        expect(value).to.equal(6);
     })
 
     it('supports decimal numbers', function () {
@@ -58,7 +58,7 @@ describe('Calculator', function () {
         expect(value).to.equal(-0.64);
     })
 
-    it('supports positive and negative numbers', function () {
+    it('supports positive and negative whole numbers', function () {
         calculator = new Calculator('-5+-8--11*2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(9);
@@ -97,7 +97,14 @@ describe('Calculator', function () {
         }).to.throw('Invalid Input')
     })
 
-    it('fails when the input is invalid', function () {
+    it('fails when the parentheses are not balanced', function () {
+        calculator = new Calculator('(2+4');
+        expect(function () {
+            calculator.evaluateExpression();
+        }).to.throw('Invalid Input')
+    })
+
+    it('fails when the input has invalid characters', function () {
         calculator = new Calculator('19 + cinnamon');
         expect(function () {
             calculator.evaluateExpression();
@@ -117,4 +124,18 @@ describe('Calculator', function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')
     })
+
+    it('fails when the expression is empty', function () {
+        calculator = new Calculator('');
+        expect(function () {
+            calculator.evaluateExpression();
+        }).to.throw('Invalid Input')
+    })
+
+    it('removes spaces in the original expression', function () {
+        calculator = new Calculator('       3.5 + 4     ');
+        calculator.evaluateExpression();
+        expect(calculator.expression).to.equal('3.5+4');
+    })
+
 })
