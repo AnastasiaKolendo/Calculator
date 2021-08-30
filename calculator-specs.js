@@ -68,7 +68,7 @@ describe('Calculator', function () {
         calculator = new Calculator('2+-+-4');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid input at -+-4')
     })
 
     it('fails when the second operator is not -', function () {
@@ -99,6 +99,20 @@ describe('Calculator', function () {
 
     it('fails when the input is invalid', function () {
         calculator = new Calculator('19 + cinnamon');
+        expect(function () {
+            calculator.evaluateExpression();
+        }).to.throw('Invalid input at cinnamon')
+    })
+
+    it('fails when the beggining of the expression is invalid', function () {
+        calculator = new Calculator('+2+4');
+        expect(function () {
+            calculator.evaluateExpression();
+        }).to.throw('Invalid Input')
+    })
+
+    it('fails when the end of the expression is invalid', function () {
+        calculator = new Calculator('2+4-');
         expect(function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')

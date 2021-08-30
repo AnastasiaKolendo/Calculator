@@ -4,99 +4,98 @@ class Calculator {
     }
 
     evaluateExpression() {
-        const arrayExpression = this.parseExpression();
+        let tokens = this.parseExpression();
+        if (tokens.length === 0) throw new Error('Invalid Input');
 
-        if (arrayExpression.length === 0) return 0;
+        const value = this.evaluateTokens(tokens);
+        if(tokens.length > 0) throw new Error('Invalid Input');
+        return value;
+    }
 
-        const numbers = [];
-        const operations = [];
+    evaluateTokens(tokens) {
+        const stack = [];
+        let operator = '+';
+        let num = null;
 
-        for (let i = 0; i < arrayExpression.length; i++) {
+        while (tokens.length > 0 && tokens[0] !== ')') {
+            let token = tokens.shift();
+           
+            if (!isNaN(token)) {
+                num = token;
+            } else if (token === '(') {
+                num = this.evaluateTokens(tokens);
 
-            if (!isNaN(arrayExpression[i])) {
-                numbers.push(arrayExpression[i]);
-            } else if (arrayExpression[i] === '(') {
-                operations.push('(');
-            } else if (arrayExpression[i] === ')') {
-
-                while (operations[operations.length - 1] !== '(') {
-                    if (operations.length === 0) throw new Error('Invalid Input');
-
-                    numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
-                }
-
-                operations.pop();
+                if(tokens[0] !== ')')  throw new Error('Invalid Input');
+                tokens.shift();
             } else {
-
-                while (operations.length > 0 && this.checkPrecedence(arrayExpression[i], operations[operations.length - 1])) {
-                    numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
-                }
-
-                operations.push(arrayExpression[i]);
+                this.calculate(operator, stack, num);
+                num = null;
+                operator = token;
             }
         }
-
-        while (operations.length !== 0) {
-            numbers.push(this.calculate(numbers.pop(), operations.pop(), numbers.pop()))
+        this.calculate(operator, stack, num);
+        let value = 0;
+        
+        while (stack.length > 0) {
+            value += stack.pop();
         }
-
-        return numbers.pop();
+        
+        return value;
     }
 
-    checkPrecedence(operator1, operator2) {
-        if (operator2 === '(' || operator2 === ')') return false;
-        if ((operator1 === '*' || operator1 === '/') && (operator2 === '+' || operator2 === '-')) return false;
-        return true;
+    calculate(operator, stack, num) {
+        if (num === null) throw new Error('Invalid Input');
+        if (operator === '+') {
+            stack.push(num);
+        } else if (operator === '-') {
+            stack.push(-num);
+        } else if (operator === '*') {
+            let prevNum = stack.pop();
+            stack.push(num * prevNum);
+        } else if (operator === '/') {
+            let prevNum = stack.pop();
+            stack.push(prevNum / num);
+        }
     }
-
-    calculate(operand1, operator, operand2) {
-        if (operator === '-') return operand2 - operand1;
-        if (operator === '+') return operand1 + operand2;
-        if (operator === '*') return operand1 * operand2;
-        else return operand2 / operand1;
-    }
-
 
     parseExpression() {
         const array = [];
         this.removeSpaces();
-        let expression = this.expression;
         let i = 0;
+        const arithmeticMinusPredecessors = ['+', '-', '(', '/', '*'];
+        const nonMinusOperators = ['*', '/', '+', '(', ')'];
 
-        while (i < expression.length) {
+        while (i < this.expression.length) {
 
-            if (expression[i] === '-' && i !== 0 && expression[i - 1] !== '+' && expression[i - 1] !== '-' && expression[i - 1] !== '(' && expression[i - 1] !== '/' && expression[i - 1] !== '*') {
-                    array.push(expression[i]);
-                    i++;
-            } else if (expression[i] === '*' || expression[i] === '/' || expression[i] === '+' || expression[i] === '(' || expression[i] === ')') {
-                array.push(expression[i]);
+            if (this.expression[i] === '-' && i !== 0 && !arithmeticMinusPredecessors.includes(this.expression[i - 1])) {
+                array.push(this.expression[i]);
+                i++;
+            } else if (nonMinusOperators.includes(this.expression[i])) {
+                array.push(this.expression[i]);
                 i++;
             } else {
-
                 let j = i;
 
-                if(expression[j] === '-'){
+                if (this.expression[j] === '-') {
                     j = i + 1
                 }
 
-                while(expression[j] === '.' || !isNaN(expression[j])){
+                while (this.expression[j] === '.' || !isNaN(this.expression[j])) {
                     j++;
                 }
 
-                const numString = expression.slice(i, j);
-                
+                const numString = this.expression.slice(i, j);
                 const num = Number.parseFloat(numString);
 
-                if(isNaN(num)){
-                    
-                    throw new Error('Invalid number at ' + expression.slice(i));
+                if (isNaN(num)) {
+                    throw new Error('Invalid input at ' + this.expression.slice(i));
                 }
 
                 array.push(num);
                 i = j;
             }
         }
-    
+
         return array;
     }
 
@@ -107,5 +106,6 @@ class Calculator {
 }
 
 module.exports = Calculator
+
 
 
