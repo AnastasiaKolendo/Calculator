@@ -50,7 +50,7 @@ describe('Calculator', function () {
     it('divides decimal numbers', function () {
         calculator = new Calculator('33.3/3');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(11.1);
+        expect(value).to.be.at.most(11.1);
     })
 
     it('fails when devided by zero', function () {
@@ -67,9 +67,9 @@ describe('Calculator', function () {
     })
 
     it('multiplies and divides', function () {
-        calculator = new Calculator('4*5/2');
+        calculator = new Calculator('12/6*3');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(10);
+        expect(value).to.equal(6);
     })
 
     it('multiplies, divides, substructs and adds', function () {
@@ -88,6 +88,12 @@ describe('Calculator', function () {
         calculator = new Calculator('-5+-8--11*2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(9);
+    })
+
+    it('supports unary minus before a parentheses', function () {
+        calculator = new Calculator('-5*-(8+3)--11*2');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(77);
     })
 
     it('fails when there are more than 2 operators in series', function () {
