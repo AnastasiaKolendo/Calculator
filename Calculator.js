@@ -111,11 +111,11 @@ class Calculator {
     }
 
     getPriority(operator) {
-        if (operator == '-' || operator == '+') {
+        if (operator === '-' || operator === '+') {
             return 1;
-        } else if (operator == '/' || operator == '*') {
+        } else if (operator === '/' || operator === '*') {
             return 2;
-        }
+        } 
     }
 
     calculate(operand1, operator, operand2) {
