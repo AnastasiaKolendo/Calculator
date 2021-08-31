@@ -2,8 +2,8 @@
 
 ## Description
 
-A calculator program that allows a user to enter a math problem as a string and get an answer.
-> Assignment for VidMob. 
+A calculator program that allows a user to enter an arithmetic expression as a string and get an answer.
+> Assignment. 
 
 **The calculator allows basic arithmetic operations:**
 
@@ -16,14 +16,14 @@ A calculator program that allows a user to enter a math problem as a string and 
 Run npm i to install dev dependencies
 
 ## Usage
-To use this as boilerplate, you'll need to take the following steps:
+To use this program, you will need to take the following steps:
 * Fork the repository: https://github.com/AnastasiaKolendo/Calculator.git
-* Install node and a text editor
+* Install node
 * Clone the repository to your local machine
-* Run node main.js using your command line from the directory that contains the file
+* Run `node main.js` using your command line from the directory that contains the file
 
 ## Run tests
-npm test
+`npm test`
 
 ## Tech Stack
 JavaScript ES6, Node.js, Mocha, Chai.

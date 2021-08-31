@@ -4,61 +4,87 @@ const Calculator = require('./calculator.js');
 describe('Calculator', function () {
     let calculator;
 
-    it('adds numbers', function () {
-        calculator = new Calculator('1 + 2');
+    it('adds whole numbers', function () {
+        calculator = new Calculator('1+2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(3);
     })
 
-    it('substructs numbers', function () {
-        calculator = new Calculator('16 - 2');
+    it('substructs whole numbers', function () {
+        calculator = new Calculator('16-2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(14);
     })
 
-    it('adds and substructs numbers', function () {
-        calculator = new Calculator('16 - 2 + 3');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(17);
-    })
-
-    it('multiplies numbers', function () {
-        calculator = new Calculator('11 * 2');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(22);
-    })
-
-    it('devides numbers', function () {
-        calculator = new Calculator('33 / 3');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(11);
-    })
-
-    it('multiplis and devides', function () {
-        calculator = new Calculator('4*5/2');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(10);
-    })
-
-    it('multiplis, devides, substructs and adds', function () {
-        calculator = new Calculator('3 + 6 * 4 / 3 - 5');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(6);
-    })
-
-    it('supports decimal numbers', function () {
+    it('adds decimal numbers', function () {
         calculator = new Calculator('1.9 + 2.8');
         const value = calculator.evaluateExpression();
         expect(value).to.be.at.most(5);
     })
 
-    it('supports decimal negative numbers', function () {
-        calculator = new Calculator('-.32       /.5');
+    it('substructs decimal numbers', function () {
+        calculator = new Calculator('1.9-2.8');
+        const value = calculator.evaluateExpression();
+        expect(value).to.be.at.most(-0.8);
+    })
+
+
+    it('adds and substructs numbers', function () {
+        calculator = new Calculator('16-2+3');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(17);
+    })
+
+    it('multiplies whole numbers', function () {
+        calculator = new Calculator('11*2');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(22);
+    })
+
+    it('devides whole numbers', function () {
+        calculator = new Calculator('33/3');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(11);
+    })
+
+    it('divides decimal numbers', function () {
+        calculator = new Calculator('33.3/3');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(11.1);
+    })
+
+    it('fails when devided by zero', function () {
+        calculator = new Calculator('2/0');
+        expect(function () {
+            calculator.evaluateExpression();
+        }).to.throw("Invalid Input. You can't devide by zero")
+    })
+
+    it('multiplies decimal numbers', function () {
+        calculator = new Calculator('33.3*3');
+        const value = calculator.evaluateExpression();
+        expect(value).to.be.at.most(99.9);
+    })
+
+    it('multiplies and divides', function () {
+        calculator = new Calculator('4*5/2');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(10);
+    })
+
+    it('multiplies, divides, substructs and adds', function () {
+        calculator = new Calculator('3+6*4/3-5');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(6);
+    })
+
+    it('devides decimal negative and positive decimal numbers', function () {
+        calculator = new Calculator('-.32/.5');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(-0.64);
     })
 
-    it('supports positive and negative whole numbers', function () {
+    it('supports unary minus', function () {
         calculator = new Calculator('-5+-8--11*2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(9);
@@ -71,17 +97,11 @@ describe('Calculator', function () {
         }).to.throw('Invalid input at -+-4')
     })
 
-    it('fails when the second operator is not -', function () {
+    it('fails when the second operator is not unary minus', function () {
         calculator = new Calculator('2++4');
         expect(function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')
-    })
-
-    it("calculates a value when the second operator is '-'", function () {
-        calculator = new Calculator('2+-4');
-        const value = calculator.evaluateExpression();
-        expect(value).to.equal(-2);
     })
 
     it('supports parentheses', function () {
@@ -90,14 +110,20 @@ describe('Calculator', function () {
         expect(value).to.equal(7);
     })
 
-    it('fails when the parentheses are not balanced', function () {
+    it('supports nested parentheses', function () {
+        calculator = new Calculator('(4-2)*(3.5+(4-3))');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(9);
+    })
+
+    it('fails when the parentheses are not balanced on the right', function () {
         calculator = new Calculator('2+4)');
         expect(function () {
             calculator.evaluateExpression();
         }).to.throw('Invalid Input')
     })
 
-    it('fails when the parentheses are not balanced', function () {
+    it('fails when the parentheses are not balanced on the left', function () {
         calculator = new Calculator('(2+4');
         expect(function () {
             calculator.evaluateExpression();
@@ -129,13 +155,13 @@ describe('Calculator', function () {
         calculator = new Calculator('');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid Input. You entered an empty string');
     })
 
     it('removes spaces in the original expression', function () {
-        calculator = new Calculator('       3.5 + 4     ');
+        calculator = new Calculator('-.32       /.5');
         calculator.evaluateExpression();
-        expect(calculator.expression).to.equal('3.5+4');
+        expect(calculator.expression).to.equal('-.32/.5');
     })
 
 })

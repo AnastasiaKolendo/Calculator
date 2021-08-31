@@ -5,10 +5,10 @@ class Calculator {
 
     evaluateExpression() {
         let tokens = this.parseExpression();
-        if (tokens.length === 0) throw new Error('Invalid Input');
+        if (tokens.length === 0) throw new Error('Invalid Input. You entered an empty string');
 
         const value = this.evaluateTokens(tokens);
-        if(tokens.length > 0) throw new Error('Invalid Input');
+        if(tokens.length > 0) throw new Error('Invalid Input at' + tokens);
         return value;
     }
 
@@ -25,7 +25,7 @@ class Calculator {
             } else if (token === '(') {
                 num = this.evaluateTokens(tokens);
 
-                if(tokens[0] !== ')')  throw new Error('Invalid Input');
+                if(tokens[0] !== ')')  throw new Error('Invalid Input at' + tokens);
                 tokens.shift();
             } else {
                 this.calculate(operator, stack, num);
@@ -44,7 +44,7 @@ class Calculator {
     }
 
     calculate(operator, stack, num) {
-        if (num === null) throw new Error('Invalid Input');
+        if (num === null) throw new Error('Invalid Input. You have two arithmetic operators in a row');
         if (operator === '+') {
             stack.push(num);
         } else if (operator === '-') {
@@ -54,6 +54,7 @@ class Calculator {
             stack.push(num * prevNum);
         } else if (operator === '/') {
             let prevNum = stack.pop();
+            if(num === 0) throw new Error("Invalid Input. You can't devide by zero");
             stack.push(prevNum / num);
         }
     }
@@ -63,7 +64,7 @@ class Calculator {
         this.removeSpaces();
         const arithmeticMinusPredecessors = ['+', '-', '(', '/', '*'];
         const nonMinusOperators = ['*', '/', '+', '(', ')'];
-        
+
         let i = 0;
         while (i < this.expression.length) {
 
