@@ -2,8 +2,8 @@
 
 ## Description
 
-A calculator program that allows a user to enter an arithmetic expression as a string and get an answer.
-> Assignment. 
+A calculator program that allows a user to enter an arithmetic expression as a string and get an answer
+> Assignment
 
 **The calculator allows basic arithmetic operations:**
 
@@ -26,4 +26,4 @@ To use this program, you will need to take the following steps:
 `npm test`
 
 ## Tech Stack
-JavaScript ES6, Node.js, Mocha, Chai.
+JavaScript ES6, Node.js, Mocha, Chai

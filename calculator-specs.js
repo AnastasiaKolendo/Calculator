@@ -57,7 +57,7 @@ describe('Calculator', function () {
         calculator = new Calculator('2/0');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw("Invalid Input. You can't devide by zero")
+        }).to.throw("Invalid input. You can't devide by zero")
     })
 
     it('multiplies decimal numbers', function () {
@@ -101,7 +101,7 @@ describe('Calculator', function () {
         calculator = new Calculator('2++4');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid arithmetic syntax')
     })
 
     it('supports parentheses', function () {
@@ -120,14 +120,14 @@ describe('Calculator', function () {
         calculator = new Calculator('2+4)');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid input. The parentheses are not balanced on the right')
     })
 
     it('fails when the parentheses are not balanced on the left', function () {
         calculator = new Calculator('(2+4');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid input. The parentheses are not balanced on the left')
     })
 
     it('fails when the input has invalid characters', function () {
@@ -141,21 +141,21 @@ describe('Calculator', function () {
         calculator = new Calculator('+2+4');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid arithmetic syntax')
     })
 
     it('fails when the end of the expression is invalid', function () {
         calculator = new Calculator('2+4-');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input')
+        }).to.throw('Invalid arithmetic syntax')
     })
 
     it('fails when the expression is empty', function () {
         calculator = new Calculator('');
         expect(function () {
             calculator.evaluateExpression();
-        }).to.throw('Invalid Input. You entered an empty string');
+        }).to.throw('Invalid input. You entered an empty string');
     })
 
     it('removes spaces in the original expression', function () {
