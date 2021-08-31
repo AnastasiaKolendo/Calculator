@@ -10,7 +10,7 @@ describe('Calculator', function () {
         expect(value).to.equal(3);
     })
 
-    it('substructs whole numbers', function () {
+    it('subtracts whole numbers', function () {
         calculator = new Calculator('16-2');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(14);
@@ -22,14 +22,14 @@ describe('Calculator', function () {
         expect(value).to.be.at.most(5);
     })
 
-    it('substructs decimal numbers', function () {
+    it('subtracts decimal numbers', function () {
         calculator = new Calculator('1.9-2.8');
         const value = calculator.evaluateExpression();
         expect(value).to.be.at.most(-0.8);
     })
 
 
-    it('adds and substructs numbers', function () {
+    it('adds and subtracts numbers', function () {
         calculator = new Calculator('16-2+3');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(17);
@@ -41,7 +41,7 @@ describe('Calculator', function () {
         expect(value).to.equal(22);
     })
 
-    it('devides whole numbers', function () {
+    it('divides whole numbers', function () {
         calculator = new Calculator('33/3');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(11);
@@ -53,7 +53,7 @@ describe('Calculator', function () {
         expect(value).to.be.at.most(11.1);
     })
 
-    it('fails when devided by zero', function () {
+    it('fails when divided by zero', function () {
         calculator = new Calculator('2/0');
         expect(function () {
             calculator.evaluateExpression();
@@ -72,13 +72,13 @@ describe('Calculator', function () {
         expect(value).to.equal(6);
     })
 
-    it('multiplies, divides, substructs and adds', function () {
+    it('multiplies, divides, subtracts and adds', function () {
         calculator = new Calculator('3+6*4/3-5');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(6);
     })
 
-    it('devides decimal negative and positive decimal numbers', function () {
+    it('divides decimal negative and positive decimal numbers', function () {
         calculator = new Calculator('-.32/.5');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(-0.64);
@@ -91,9 +91,9 @@ describe('Calculator', function () {
     })
 
     it('supports unary minus before a parentheses', function () {
-        calculator = new Calculator('-5*-(8+3)--11*2');
+        calculator = new Calculator('-5*-(-8+3)--11*2');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(77);
+        expect(value).to.equal(-3);
     })
 
     it('fails when there are more than 2 operators in series', function () {

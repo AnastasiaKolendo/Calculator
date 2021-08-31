@@ -9,12 +9,12 @@ const rl = readline.createInterface({
 rl.question("Enter your expression, please: ", function (input) {
     const calculator = new Calculator(input);
 
-    // try {
+    try {
          const value = calculator.evaluateExpression();
         console.log('Answer: ' + value);
-    // } catch (error) {
-    //     console.log(error.message)
-    // }
+    } catch (error) {
+        console.log(error.message)
+    }
 
     rl.close()
 });
