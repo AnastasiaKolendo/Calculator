@@ -84,7 +84,7 @@ describe('Calculator', function () {
         expect(value).to.equal(-0.64);
     })
 
-    it('raises a number to the power of an exponent', function () {
+    it('raises an exponent', function () {
         calculator = new Calculator('1+2*3^4*5-2/4');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(810.5);
