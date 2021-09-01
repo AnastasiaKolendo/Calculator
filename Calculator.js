@@ -64,7 +64,7 @@ class Calculator {
             value = this.calculate(value, operator, prevMutationOperand);
             operator = prevMutationOperator;
         }
-        
+
         return value;
     }
 
@@ -91,17 +91,17 @@ class Calculator {
                 token = this.calculate(operand1, '*', operand2);
             }
 
-        } else if (stack.length > 0 ){
+        } else if (stack.length > 0) {
             while (currMutationPriority !== this.getPriority(stack[stack.length - 1][0])) {
 
                 const previousMutation = stack.pop();
                 const previousMutationOperator1 = previousMutation[0];
                 const previousMutationOperand1 = previousMutation[1];
-    
+
                 const nextPreviousMutation = stack.pop();
                 const previousMutationOperator2 = nextPreviousMutation[0];
                 const previousMutationOperand2 = nextPreviousMutation[1];
-    
+
                 const value = this.calculate(previousMutationOperand1, previousMutationOperator1, previousMutationOperand2);
                 stack.push([previousMutationOperator2, value]);
             }
@@ -115,7 +115,7 @@ class Calculator {
             return 1;
         } else if (operator === '/' || operator === '*') {
             return 2;
-        } else if(operator === '^'){
+        } else if (operator === '^') {
             return 3;
         }
     }
@@ -136,7 +136,7 @@ class Calculator {
             }
             value = operand2 / operand1;
 
-        } else if(operator === '^'){
+        } else if (operator === '^') {
             value = operand2 ** operand1;
         }
 
@@ -155,8 +155,8 @@ class Calculator {
             if (this.expression[i] === '-' && (this.expression[i + 1] === '(' || (i !== 0 && !arithmeticMinusPredecessors.includes(this.expression[i - 1])))) {
                 tokens.push(this.expression[i]);
                 i++;
-                
-            } else if(this.expression[i] === '^'){
+
+            } else if (this.expression[i] === '^') {
                 tokens.push('^');
                 i++;
 
@@ -185,7 +185,7 @@ class Calculator {
                 i = j;
             }
         }
-        
+
         return tokens;
     }
 
