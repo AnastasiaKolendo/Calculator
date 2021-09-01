@@ -135,7 +135,7 @@ class Calculator {
                 throw new Error("Invalid input. You can't devide by zero");
             }
             value = operand2 / operand1;
-            
+
         } else if(operator === '^'){
             value = operand2 ** operand1;
         }
@@ -155,16 +155,19 @@ class Calculator {
             if (this.expression[i] === '-' && (this.expression[i + 1] === '(' || (i !== 0 && !arithmeticMinusPredecessors.includes(this.expression[i - 1])))) {
                 tokens.push(this.expression[i]);
                 i++;
+                
             } else if(this.expression[i] === '^'){
                 tokens.push('^');
                 i++;
+
             } else if (nonMinusOperators.includes(this.expression[i])) {
                 tokens.push(this.expression[i]);
                 i++;
+
             } else {
                 let j = i;
                 if (this.expression[j] === '-') {
-                    j = i + 1
+                    j = i + 1;
                 }
 
                 while (this.expression[j] === '.' || !isNaN(this.expression[j])) {
@@ -191,7 +194,7 @@ class Calculator {
     }
 }
 
-module.exports = Calculator
+module.exports = Calculator;
 
 
 

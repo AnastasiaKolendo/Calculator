@@ -72,7 +72,7 @@ describe('Calculator', function () {
         expect(value).to.equal(6);
     })
 
-    it('multiplies, divides, subtracts and adds', function () {
+    it('multiplies, divides, subtracts, and adds', function () {
         calculator = new Calculator('3+6*4/3-5');
         const value = calculator.evaluateExpression();
         expect(value).to.equal(6);
@@ -102,7 +102,7 @@ describe('Calculator', function () {
         expect(value).to.equal(-3);
     })
 
-    it('fails when there are more than 2 operators in series', function () {
+    it('fails when there are more than two operators in series', function () {
         calculator = new Calculator('2+-+-4');
         expect(function () {
             calculator.evaluateExpression();
@@ -149,7 +149,7 @@ describe('Calculator', function () {
         }).to.throw('Invalid input at cinnamon')
     })
 
-    it('fails when the beggining of the expression is invalid', function () {
+    it('fails when the beginning of the expression is invalid', function () {
         calculator = new Calculator('+2+4');
         expect(function () {
             calculator.evaluateExpression();
