@@ -123,9 +123,9 @@ describe('Calculator', function () {
     })
 
     it('supports nested parentheses', function () {
-        calculator = new Calculator('(4-2)*(3.5+(4-3))');
+        calculator = new Calculator('(4-2)*(3.5+(4-3) + 4)');
         const value = calculator.evaluateExpression();
-        expect(value).to.equal(9);
+        expect(value).to.equal(17);
     })
 
     it('fails when the parentheses are not balanced on the right', function () {
