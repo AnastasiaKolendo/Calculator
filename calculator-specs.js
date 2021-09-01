@@ -84,6 +84,12 @@ describe('Calculator', function () {
         expect(value).to.equal(-0.64);
     })
 
+    it('raises a number to the power of an exponent', function () {
+        calculator = new Calculator('1+2*3^4*5-2/4');
+        const value = calculator.evaluateExpression();
+        expect(value).to.equal(810.5);
+    })
+
     it('supports unary minus', function () {
         calculator = new Calculator('-5+-8--11*2');
         const value = calculator.evaluateExpression();
@@ -169,5 +175,4 @@ describe('Calculator', function () {
         calculator.evaluateExpression();
         expect(calculator.expression).to.equal('-.32/.5');
     })
-
 })

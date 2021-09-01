@@ -115,7 +115,9 @@ class Calculator {
             return 1;
         } else if (operator === '/' || operator === '*') {
             return 2;
-        } 
+        } else if(operator === '^'){
+            return 3;
+        }
     }
 
     calculate(operand1, operator, operand2) {
@@ -133,6 +135,9 @@ class Calculator {
                 throw new Error("Invalid input. You can't devide by zero");
             }
             value = operand2 / operand1;
+            
+        } else if(operator === '^'){
+            value = operand2 ** operand1;
         }
 
         return value;
@@ -149,6 +154,9 @@ class Calculator {
         while (i < this.expression.length) {
             if (this.expression[i] === '-' && (this.expression[i + 1] === '(' || (i !== 0 && !arithmeticMinusPredecessors.includes(this.expression[i - 1])))) {
                 tokens.push(this.expression[i]);
+                i++;
+            } else if(this.expression[i] === '^'){
+                tokens.push('^');
                 i++;
             } else if (nonMinusOperators.includes(this.expression[i])) {
                 tokens.push(this.expression[i]);
@@ -174,14 +182,13 @@ class Calculator {
                 i = j;
             }
         }
-
+        
         return tokens;
     }
 
     removeSpaces() {
         this.expression = this.expression.split('').filter(el => el !== ' ').join('');
     }
-
 }
 
 module.exports = Calculator

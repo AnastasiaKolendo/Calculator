@@ -1,3 +1,4 @@
+
 const Calculator = require('./calculator.js');
 
 process.argv.slice(2).forEach(val => {
