@@ -10,7 +10,8 @@ A calculator program that allows a user to enter an arithmetic expression as a s
 `+` - addition\
 `-` - subtraction\
 `*` - multiplication\
-`÷` - division
+`÷` - division\
+`^` - exponent 
 
 ## Install
 Run npm i to install dev dependencies
