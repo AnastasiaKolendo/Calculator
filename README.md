@@ -18,10 +18,9 @@ Run npm i to install dev dependencies
 
 ## Usage
 To use this program, you will need to take the following steps:
-* Fork the repository: https://github.com/AnastasiaKolendo/Calculator.git
+* Run `git clone https://github.com/AnastasiaKolendo/Calculator.git` to your local machine
 * Install node
-* Clone the repository to your local machine
-* Run `node main.js` with an expression as an argument using your command line from the directory that contains the file. For example: `node main.js "1+2*3"` 
+* Run `node main.js` with an arithmetic string expression as an argument using your command line from the directory that contains the file. For example: `node main.js "1+2*3"` 
 
 ## Run tests
 `npm test`

@@ -1,7 +1,7 @@
 {
   "name": "calculator",
   "version": "1.0.0",
-  "description": "A calculator program that allows a user to enter a math problem as a string and get an answer",
+  "description": "A calculator program that allows a user to enter an arithmetic expression as a string and get an answer",
   "main": "main.js",
   "scripts": {
     "test": "mocha calculator-specs.js --watch"
